@@ -4,6 +4,33 @@ language:
   - minimal
 services:
   - docker
+sudo: false
+
+language: cpp
+
+compiler:
+  -gcc
+
+before_install:
+  - pip install --user cpp-coveralls
+
+install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-8" CC="gcc-8"; fi
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+
+script:
+  - ctest -V
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-8
+      - g++-8
 
 jobs:
   include:
